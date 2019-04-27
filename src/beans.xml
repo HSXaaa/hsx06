@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+        
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+    
+	<context:property-placeholder location="jdbc.properties"/>
+    
+    <bean id="namedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+    	<constructor-arg ref="dataSource"></constructor-arg>
+    </bean>
+	
+	
+	<bean id="studentDao" class="hsx.com.dao.impl.StudentDaoImpl">
+		<property name="namedParameterJdbcTemplate" ref="namedParameterJdbcTemplate"></property>
+	</bean> 
+	
+	<bean id="studentService" class="hsx.com.service.impl.StudentServiceImpl">
+		<property name="studentDao" ref="studentDao"></property>
+	</bean>        
+        
+        
+        
+        
+            
+        
+
+	<!-- <bean id="studentServiceAspect" class="hsx.com.advice.StudentServiceAspect"></bean>
+	
+	<bean id="studentService" class="hsx.com.service.impl.StudentServiceImpl"></bean>
+	
+	<aop:config>
+		<aop:aspect id="studentServiceAspect" ref="studentServiceAspect">
+			<aop:pointcut expression="execution(* hsx.com.service.*.*(..))" id="businessService"/>
+			<aop:before method="doBefore" pointcut-ref="businessService"/>
+			<aop:after method="doAfter" pointcut-ref="businessService"/>
+			<aop:around method="doAround" pointcut-ref="businessService"/>
+			<aop:after-returning method="doAfterReturning" pointcut-ref="businessService"/>
+			<aop:after-throwing method="doAfterThrowing" pointcut-ref="businessService" throwing="ex"/>
+		</aop:aspect> 
+	</aop:config> -->
+
+	
+<!--   	<bean id="people1" class="hsx.com.entity.People">
+		<property name="id" value="1"></property>
+		<property name="name" value="张三"></property>
+		<property name="age" value="11"></property>
+	</bean>
+	
+	<bean id="dog1" class="hsx.com.entity.Dog">
+		<property name="name" value="Jack"></property>
+	</bean>
+	
+	<bean id="people2" class="hsx.com.entity.People">
+		<property name="id" value="1"></property>
+		<property name="name" value="张三"></property>
+		<property name="age" value="11"></property>
+		<property name="dog" ref="dog1"></property>
+	</bean>
+	
+	<bean id="people3" class="hsx.com.entity.People">
+		<property name="id" value="1"></property>
+		<property name="name" value="张三"></property>
+		<property name="age" value="11"></property>
+		<property name="dog">
+			<bean class="hsx.com.entity.Dog">
+				<property name="name" value="Tom"></property>
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="people4" class="hsx.com.entity.People">
+		<property name="id" value="1"></property>
+		<property name="name" value="张三"></property>
+		<property name="age" value="11"></property>
+		<property name="dog">
+			<null></null>
+		</property>
+	</bean>
+	
+	<bean id="people5" class="hsx.com.entity.People">
+		<property name="id" value="1"></property>
+		<property name="name" value="张三"></property>
+		<property name="age" value="11"></property>
+		<property name="dog.name" value="Jack2"></property>
+	</bean> 
+	
+	<bean id="people6" class="hsx.com.entity.People">
+		<property name="id" value="1"></property>
+		<property name="name" value="张三"></property>
+		<property name="age" value="11"></property>
+		<property name="dog" ref="dog1"></property>
+		<property name="hobbies">
+			<list>
+				<value>唱歌</value>
+				<value>跳舞</value>
+			</list>
+		</property>
+		<property name="loves">
+			<set>
+				<value>唱歌2</value>
+				<value>跳舞2</value>
+			</set>
+		</property>
+		<property name="works">
+			<map>
+				<entry>
+					<key><value>上午</value></key>
+					<value>写代码</value>
+				</entry>
+				<entry>
+					<key><value>下午</value></key>
+					<value>测试代码</value>
+				</entry>
+			</map>
+		</property>
+		<property name="addresses">
+			<props>
+				<prop key="address1">aaaaa</prop>
+				<prop key="address2">bbbbb</prop>
+			</props>
+		</property>
+	</bean> -->
+  	   	 
+  	<!-- <bean id="helloWorld" class="hsx.com.test.HelloWorld"></bean>
+
+	<bean id="zhangsan" class="hsx.com.service.ZhangSan"></bean>
+	
+	<bean id="lisi" class="hsx.com.service.Lisi"></bean>
+	
+	<bean id="javaWork" class="hsx.com.service.JavaWork">
+		<property name="tester" ref="lisi"></property>
+	</bean>
+  
+    <bean id="people" class="hsx.com.entity.People"></bean>
+	
+	<bean id="people2" class="hsx.com.entity.People">
+		<property name="id" value="1"></property>
+		<property name="name" value="张三"></property>
+		<property name="age" value="11"></property>
+	</bean>
+	
+	<bean id="people3" class="hsx.com.entity.People">
+		<constructor-arg type="int" value="2"></constructor-arg>
+		<constructor-arg type="String" value="李四"></constructor-arg>
+		<constructor-arg type="int" value="22"></constructor-arg>
+	</bean>
+	
+	<bean id="people4" class="hsx.com.entity.People">
+		<constructor-arg index="0" value="3"></constructor-arg>
+		<constructor-arg index="1" value="王五"></constructor-arg>
+		<constructor-arg index="2" value="55"></constructor-arg>
+	</bean>
+	
+	<bean id="people5" class="hsx.com.entity.People">
+		<constructor-arg index="0" type="int" value="4"></constructor-arg>
+		<constructor-arg index="1" type="String" value="招六"></constructor-arg>
+		<constructor-arg index="2" type="int" value="66"></constructor-arg>
+	</bean>
+	
+	<bean id="peopleFactory" class="hsx.com.factory.PeopleFactory"></bean>
+	
+	<bean id="people7" factory-bean="peopleFactory" factory-method="createPeople"></bean>
+  
+  	<bean id="people8" class="hsx.com.factory.PeopleFactory2" factory-method="createPeople"></bean> 
+  	 -->
+</beans>
